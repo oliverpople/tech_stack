@@ -6,16 +6,16 @@ import * as actions from '../actions';
 
 class ListItem extends Component {
   renderDescription() {
-    const { libraries, selectedLibraryId } = this.props;
+    const { library, expanded } = this.props;
 
-    if (libraries.item.id === selectedLibraryId) {
-      return <Text>{libraries.item.description}</Text>;
+    if (expanded) {
+      return <Text>{library.item.description}</Text>;
     }
   }
 
   render() {
     const { titleStyle } = styles;
-    const { id, title } = this.props.libraries.item;
+    const { id, title } = this.props.library.item;
 
     return (
       <TouchableWithoutFeedback onPress={() => this.props.selectedLibrary(id)}>
@@ -37,9 +37,11 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => ({
-  selectedLibraryId: state.selectedLibraryId
-});
+const mapStateToProps = (state, ownProps) => {
+  const expanded = state.selectedLibraryId === ownProps.library.item.id;
+
+  return { expanded };
+};
 
 export default connect(
   mapStateToProps,
